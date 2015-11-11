@@ -22,6 +22,7 @@ describe 'gitolite::server::config' do
             :apache_notify        => false,
             :write_apache_conf_to => '',
             :enable_features      => ['test_feature'],
+            :git_config_keys      => 'test_config_keys',
             :grouplist_pgm        => nil,
             :local_code           => 'test_local_code',
         }
@@ -81,6 +82,7 @@ describe 'gitolite::server::config' do
       it { should contain_file('gitolite-config').with_path('/opt/git/.gitolite.rc').
           with_content(/LOCAL_CODE.*test_local_code/).
           with_content(/'test_feature',/).
+          with_content(/GIT_CONFIG_KEYS\s+=>\s+'test_config_keys',/).
           that_requires('Exec[install-gitolite]')
       }
     end
@@ -104,6 +106,7 @@ describe 'gitolite::server::config' do
             :apache_notify        => false,
             :write_apache_conf_to => '',
             :enable_features      => ['test_feature'],
+            :git_config_keys      => 'test_config_keys',
             :grouplist_pgm        => nil,
             :local_code           => 'test_local_code',
         }
@@ -163,6 +166,7 @@ describe 'gitolite::server::config' do
       it { should contain_file('gitolite-config').with_path('/opt/git/.gitolite.rc').
         with_content(/LOCAL_CODE.*test_local_code/).
         with_content(/'test_feature',/).
+        with_content(/GIT_CONFIG_KEYS\s+=>\s+'test_config_keys',/).
         that_requires('Exec[install-gitolite]')
       }
     end

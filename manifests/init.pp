@@ -30,6 +30,7 @@
 #  $hooks: Array of repositories which have hooks in $gt_hooks_module
 #  $enable_features: Enable these FEATURES in gitolite configuration, in
 #                    addition to the hard-coded ones.
+#  $git_config_keys: Regular expression to configure GIT_CONFIG_KEYS.
 #  $grouplist_pgm: An external program called to determine user groups
 #                  (see http://gitolite.com/gitolite/auth.html#ldap)
 #  $local_code: path to a directory to add or override gitolite programs
@@ -92,6 +93,7 @@ class gitolite(
   $ssh_key              = '',
   $hooks                = [],
   $enable_features      = [],
+  $git_config_keys      = undef,
   $grouplist_pgm        = undef,
   $local_code           = undef
 ) {
@@ -113,6 +115,7 @@ class gitolite(
       write_apache_conf_to => $write_apache_conf_to,
       ssh_key              => $ssh_key,
       enable_features      => $enable_features,
+      git_config_keys      => $git_config_keys,
       grouplist_pgm        => $grouplist_pgm,
       local_code           => $local_code,
       require              => Class['gitolite::client'],

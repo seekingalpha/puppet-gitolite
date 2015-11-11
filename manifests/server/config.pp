@@ -28,6 +28,7 @@
 #                  (see http://gitolite.com/gitolite/auth.html#ldap)
 #  $enable_features: Enable these FEATURES in gitolite configuration, in
 #                    addition to the hard-coded ones.
+#  $git_config_keys: Regular expression to configure GIT_CONFIG_KEYS.
 #  $local_code: path to a directory to add or override gitolite programs
 #               (see http://gitolite.com/gitolite/cust.html#localcode)
 #
@@ -47,6 +48,7 @@ class gitolite::server::config(
   $apache_notify,
   $write_apache_conf_to,
   $enable_features,
+  $git_config_keys,
   $grouplist_pgm,
   $local_code,
 ) {
