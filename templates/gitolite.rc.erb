@@ -19,8 +19,8 @@
             'git-config',
             'daemon',
             'gitweb',
-            <%= @repo_specific_hooks ? '' : '#' %>'repo-specific-hooks',
-            <%= @wildrepos ? '#' : '' %>'no-create-on-read',
-            <%= @wildrepos ? '#' : '' %>'no-auto-create',
+        <% @enable_features.each do |feature| %>
+            '<%= feature %>',
+        <% end %>
     ],
 );

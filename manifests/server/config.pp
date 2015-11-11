@@ -26,7 +26,8 @@
 #  $ssh_key: the SSH key used to seed the admin account for gitolite.
 #  $grouplist_pgm: An external program called to determine user groups
 #                  (see http://gitolite.com/gitolite/auth.html#ldap)
-#  $repo_specific_hooks: enable repo-specific hooks in gitolite configuration
+#  $enable_features: Enable these FEATURES in gitolite configuration, in
+#                    addition to the hard-coded ones.
 #  $local_code: path to a directory to add or override gitolite programs
 #               (see http://gitolite.com/gitolite/cust.html#localcode)
 #
@@ -45,10 +46,9 @@ class gitolite::server::config(
   $manage_apache,
   $apache_notify,
   $write_apache_conf_to,
-  $wildrepos,
+  $enable_features,
   $grouplist_pgm,
-  $repo_specific_hooks,
-  $local_code
+  $local_code,
 ) {
   File {
     owner => $gitolite::params::gt_uid,
@@ -176,7 +176,7 @@ class gitolite::server::config(
     mode    => '0640',
     require => Exec['install-gitolite'],
   }
-  # Template uses $wildrepos
+  # Template uses $enable_features
   file { 'gitolite-config':
     path    => "${gitolite::params::gt_repo_base}/.gitolite.rc",
     content => template('gitolite/gitolite.rc.erb'),

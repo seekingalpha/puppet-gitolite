@@ -21,9 +21,8 @@ describe 'gitolite::server::config' do
             :manage_apache        => false,
             :apache_notify        => false,
             :write_apache_conf_to => '',
-            :wildrepos            => '',
+            :enable_features      => ['test_feature'],
             :grouplist_pgm        => nil,
-            :repo_specific_hooks  => false,
             :local_code           => 'test_local_code',
         }
       }
@@ -81,9 +80,7 @@ describe 'gitolite::server::config' do
       it { should contain_file('/opt/git/projects.list').with_mode('0640') }
       it { should contain_file('gitolite-config').with_path('/opt/git/.gitolite.rc').
           with_content(/LOCAL_CODE.*test_local_code/).
-          with_content(/#'repo-specific-hooks'/).
-          with_content(/#'no-create-on-read'/).
-          with_content(/#'no-auto-create'/).
+          with_content(/'test_feature',/).
           that_requires('Exec[install-gitolite]')
       }
     end
@@ -106,9 +103,8 @@ describe 'gitolite::server::config' do
             :manage_apache        => false,
             :apache_notify        => false,
             :write_apache_conf_to => '',
-            :wildrepos            => '',
+            :enable_features      => ['test_feature'],
             :grouplist_pgm        => nil,
-            :repo_specific_hooks  => false,
             :local_code           => 'test_local_code',
         }
       }
@@ -166,9 +162,7 @@ describe 'gitolite::server::config' do
       it { should contain_file('/opt/git/projects.list').with_mode('0640') }
       it { should contain_file('gitolite-config').with_path('/opt/git/.gitolite.rc').
         with_content(/LOCAL_CODE.*test_local_code/).
-        with_content(/#'repo-specific-hooks'/).
-        with_content(/#'no-create-on-read'/).
-        with_content(/#'no-auto-create'/).
+        with_content(/'test_feature',/).
         that_requires('Exec[install-gitolite]')
       }
     end
