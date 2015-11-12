@@ -90,7 +90,7 @@ class gitolite(
   $apache_notify        = '',
   $write_apache_conf_to = '',
   $ssh_key              = '',
-  $hooks                = '',
+  $hooks                = [],
   $wildrepos            = false,
   $grouplist_pgm        = undef,
   $repo_specific_hooks  = false,
