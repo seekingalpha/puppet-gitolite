@@ -84,18 +84,18 @@ class gitolite::server(
 ) {
   include stdlib
 
-  if $site_name == '' { $REAL_site_name = $gitolite::params::gt_site_name }
-  else { $REAL_site_name = $site_name }
+  if $site_name == '' { $real_site_name = $gitolite::params::gt_site_name }
+  else { $real_site_name = $site_name }
 
-  if $vhost == '' { $REAL_vhost = $gitolite::params::gt_vhost }
-  else { $REAL_vhost = $vhost }
+  if $vhost == '' { $real_vhost = $gitolite::params::gt_vhost }
+  else { $real_vhost = $vhost }
 
   anchor { 'gitolite::server::begin': }
   -> class { 'gitolite::server::package': }
   -> class { 'gitolite::server::config':
-    site_name            => $REAL_site_name,
+    site_name            => $real_site_name,
     ssh_key              => $ssh_key,
-    vhost                => $REAL_vhost,
+    vhost                => $real_vhost,
     manage_apache        => $manage_apache,
     apache_notify        => $apache_notify,
     write_apache_conf_to => $write_apache_conf_to,
