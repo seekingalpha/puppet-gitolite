@@ -24,6 +24,7 @@
 #                  apache service.
 #  $vhost: the virtual host of the apache instance.
 #  $ssh_key: the SSH key used to seed the admin account for gitolite.
+#  $safe_config: Hash of variable name => value to add to SAFE_CONFIG.
 #  $grouplist_pgm: An external program called to determine user groups
 #                  (see http://gitolite.com/gitolite/auth.html#ldap)
 #  $enable_features: Enable these FEATURES in gitolite configuration, in
@@ -49,6 +50,7 @@ class gitolite::server::config(
   $write_apache_conf_to,
   $enable_features,
   $git_config_keys,
+  $safe_config,
   $grouplist_pgm,
   $local_code,
 ) {

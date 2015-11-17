@@ -6,6 +6,13 @@
         READERS                     =>  1,
         WRITERS                     =>  1,
     },
+<% if @safe_config %>
+    SAFE_CONFIG => {
+    <% @safe_config.each do |varname, strvalue| %>
+        <%= varname %> => <%= strvalue.dump %>,
+    <% end %>
+    },
+<% end %>
 <% if @grouplist_pgm %>
     GROUPLIST_PGM                   => '<%= @grouplist_pgm %>',
 <% end %>

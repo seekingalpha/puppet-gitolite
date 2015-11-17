@@ -23,6 +23,7 @@ describe 'gitolite::server::config' do
             :write_apache_conf_to => '',
             :enable_features      => ['test_feature'],
             :git_config_keys      => 'test_config_keys',
+            :safe_config          => { 'SHOWREV' => %q{a mix of " and '} },
             :grouplist_pgm        => nil,
             :local_code           => 'test_local_code',
         }
@@ -83,6 +84,7 @@ describe 'gitolite::server::config' do
           with_content(/LOCAL_CODE.*test_local_code/).
           with_content(/'test_feature',/).
           with_content(/GIT_CONFIG_KEYS\s+=>\s+'test_config_keys',/).
+          with_content(/SHOWREV\s+=>\s+"a mix of \\" and '",/).
           that_requires('Exec[install-gitolite]')
       }
     end
@@ -107,6 +109,7 @@ describe 'gitolite::server::config' do
             :write_apache_conf_to => '',
             :enable_features      => ['test_feature'],
             :git_config_keys      => 'test_config_keys',
+            :safe_config          => { 'SHOWREV' => %q{a mix of " and '} },
             :grouplist_pgm        => nil,
             :local_code           => 'test_local_code',
         }
@@ -167,6 +170,7 @@ describe 'gitolite::server::config' do
         with_content(/LOCAL_CODE.*test_local_code/).
         with_content(/'test_feature',/).
         with_content(/GIT_CONFIG_KEYS\s+=>\s+'test_config_keys',/).
+        with_content(/SHOWREV\s+=>\s+"a mix of \\" and '",/).
         that_requires('Exec[install-gitolite]')
       }
     end

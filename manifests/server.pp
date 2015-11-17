@@ -26,6 +26,7 @@
 #  $enable_features: Enable these FEATURES in gitolite configuration, in
 #                    addition to the hard-coded ones.
 #  $git_config_keys: Regular expression to configure GIT_CONFIG_KEYS.
+#  $safe_config: Hash of variable name => value to add to SAFE_CONFIG.
 #  $grouplist_pgm: An external program called to determine user groups
 #                  (see http://gitolite.com/gitolite/auth.html#ldap)
 #  $local_code: path to a directory to add or override gitolite programs
@@ -81,6 +82,7 @@ class gitolite::server(
   $write_apache_conf_to = '',
   $enable_features      = [],
   $git_config_keys      = undef,
+  $safe_config          = undef,
   $grouplist_pgm        = undef,
   $local_code           = undef
 ) {
@@ -103,6 +105,7 @@ class gitolite::server(
     write_apache_conf_to => $write_apache_conf_to,
     enable_features      => $enable_features,
     git_config_keys      => $git_config_keys,
+    safe_config          => $safe_config,
     grouplist_pgm        => $grouplist_pgm,
     local_code           => $local_code,
   }
