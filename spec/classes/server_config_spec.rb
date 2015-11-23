@@ -84,7 +84,7 @@ describe 'gitolite::server::config' do
           with_content(/#'repo-specific-hooks'/).
           with_content(/#'no-create-on-read'/).
           with_content(/#'no-auto-create'/).
-          that_comes_before('Exec[install-gitolite]')
+          that_requires('Exec[install-gitolite]')
       }
     end
 
@@ -169,7 +169,7 @@ describe 'gitolite::server::config' do
         with_content(/#'repo-specific-hooks'/).
         with_content(/#'no-create-on-read'/).
         with_content(/#'no-auto-create'/).
-        that_comes_before('Exec[install-gitolite]')
+        that_requires('Exec[install-gitolite]')
       }
     end
 

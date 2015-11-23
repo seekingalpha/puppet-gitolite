@@ -180,6 +180,6 @@ class gitolite::server::config(
   file { 'gitolite-config':
     path    => "${gitolite::params::gt_repo_base}/.gitolite.rc",
     content => template('gitolite/gitolite.rc.erb'),
-    before  => Exec['install-gitolite'],
+    require => Exec['install-gitolite'],
   }
 }
