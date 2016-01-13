@@ -14,8 +14,12 @@
 #
 # Sample Usage:
 #   This method should not be called directly.
-class gitolite::server::package {
-  package { $gitolite::params::gt_server_package:
-    ensure => 'present',
+class gitolite::server::package (
+  $install_git = true
+) {
+  if $install_git {
+    package { $gitolite::params::gt_server_package:
+      ensure => 'present',
+    }
   }
 }
