@@ -78,9 +78,9 @@ class gitolite::server::config(
   file { $gitolite::params::gt_repo_base:
     ensure => 'directory',
   }
-  file { $gitolite::params::gt_repo_dir:
-    ensure  => 'directory',
-  }
+  #file { $gitolite::params::gt_repo_dir:
+  #  ensure  => 'directory',
+  #}
   file { "${gitolite::params::gt_httpd_conf_dir}/git.conf":
     ensure => 'absent',
   }
