@@ -28,10 +28,12 @@
 #  $vhost: the virtual host of the apache instance.
 #  $ssh_key: the SSH key used to seed the admin account for gitolite.
 #  $hooks: Array of repositories which have hooks in $gt_hooks_module
-#  $wildrepos: Whether to enable wildrepos or not.
+#  $enable_features: Enable these FEATURES in gitolite configuration, in
+#                    addition to the hard-coded ones.
+#  $git_config_keys: Regular expression to configure GIT_CONFIG_KEYS.
+#  $safe_config: Hash of variable name => value to add to SAFE_CONFIG.
 #  $grouplist_pgm: An external program called to determine user groups
 #                  (see http://gitolite.com/gitolite/auth.html#ldap)
-#  $repo_specific_hooks: enable repo-specific hooks in gitolite configuration
 #  $local_code: path to a directory to add or override gitolite programs
 #               (see http://gitolite.com/gitolite/cust.html#localcode)
 #
@@ -90,10 +92,11 @@ class gitolite(
   $apache_notify        = '',
   $write_apache_conf_to = '',
   $ssh_key              = '',
-  $hooks                = '',
-  $wildrepos            = false,
+  $hooks                = [],
+  $enable_features      = [],
+  $git_config_keys      = undef,
+  $safe_config          = undef,
   $grouplist_pgm        = undef,
-  $repo_specific_hooks  = false,
   $local_code           = undef
 ) {
   include stdlib
@@ -113,9 +116,10 @@ class gitolite(
       apache_notify        => $apache_notify,
       write_apache_conf_to => $write_apache_conf_to,
       ssh_key              => $ssh_key,
-      wildrepos            => $wildrepos,
+      enable_features      => $enable_features,
+      git_config_keys      => $git_config_keys,
+      safe_config          => $safe_config,
       grouplist_pgm        => $grouplist_pgm,
-      repo_specific_hooks  => $repo_specific_hooks,
       local_code           => $local_code,
       require              => Class['gitolite::client'],
       before               => Anchor['gitolite::end'],

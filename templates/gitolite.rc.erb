@@ -1,13 +1,24 @@
 %RC = (
     UMASK                           =>  0027,
-    GIT_CONFIG_KEYS                 =>  '',
+    GIT_CONFIG_KEYS                 =>  '<%= @git_config_keys %>',
     LOG_EXTRA                       =>  1,
     ROLES => {
         READERS                     =>  1,
         WRITERS                     =>  1,
-    },<% if @grouplist_pgm %>
-    GROUPLIST_PGM                   => '<%= @grouplist_pgm %>',<% end %><% if @local_code %>
-    LOCAL_CODE                      => '<%= @local_code %>',<% end %>
+    },
+<% if @safe_config %>
+    SAFE_CONFIG => {
+    <% @safe_config.each do |varname, strvalue| %>
+        <%= varname %> => <%= strvalue.dump %>,
+    <% end %>
+    },
+<% end %>
+<% if @grouplist_pgm %>
+    GROUPLIST_PGM                   => '<%= @grouplist_pgm %>',
+<% end %>
+<% if @local_code %>
+    LOCAL_CODE                      => "<%= @local_code %>",
+<% end %>
     ENABLE => [
 
             'help',
@@ -19,8 +30,8 @@
             'git-config',
             'daemon',
             'gitweb',
-            <%= @repo_specific_hooks ? '' : '#' %>'repo-specific-hooks',
-            <%= @wildrepos ? '#' : '' %>'no-create-on-read',
-            <%= @wildrepos ? '#' : '' %>'no-auto-create',
+        <% @enable_features.each do |feature| %>
+            '<%= feature %>',
+        <% end %>
     ],
 );

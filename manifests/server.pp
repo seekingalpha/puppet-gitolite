@@ -23,9 +23,12 @@
 #                  service.
 #  $vhost: the virtual host of the apache instance.
 #  $ssh_key: the SSH key used to seed the admin account for gitolite.
+#  $enable_features: Enable these FEATURES in gitolite configuration, in
+#                    addition to the hard-coded ones.
+#  $git_config_keys: Regular expression to configure GIT_CONFIG_KEYS.
+#  $safe_config: Hash of variable name => value to add to SAFE_CONFIG.
 #  $grouplist_pgm: An external program called to determine user groups
 #                  (see http://gitolite.com/gitolite/auth.html#ldap)
-#  $repo_specific_hooks: enable repo-specific hooks in gitolite configuration
 #  $local_code: path to a directory to add or override gitolite programs
 #               (see http://gitolite.com/gitolite/cust.html#localcode)
 #
@@ -77,31 +80,33 @@ class gitolite::server(
   $manage_apache        = '',
   $apache_notify        = '',
   $write_apache_conf_to = '',
-  $wildrepos            = false,
+  $enable_features      = [],
+  $git_config_keys      = undef,
+  $safe_config          = undef,
   $grouplist_pgm        = undef,
-  $repo_specific_hooks  = false,
   $local_code           = undef
 ) {
   include stdlib
 
-  if $site_name == '' { $REAL_site_name = $gitolite::params::gt_site_name }
-  else { $REAL_site_name = $site_name }
+  if $site_name == '' { $real_site_name = $gitolite::params::gt_site_name }
+  else { $real_site_name = $site_name }
 
-  if $vhost == '' { $REAL_vhost = $gitolite::params::gt_vhost }
-  else { $REAL_vhost = $vhost }
+  if $vhost == '' { $real_vhost = $gitolite::params::gt_vhost }
+  else { $real_vhost = $vhost }
 
   anchor { 'gitolite::server::begin': }
   -> class { 'gitolite::server::package': }
   -> class { 'gitolite::server::config':
-    site_name            => $REAL_site_name,
+    site_name            => $real_site_name,
     ssh_key              => $ssh_key,
-    vhost                => $REAL_vhost,
+    vhost                => $real_vhost,
     manage_apache        => $manage_apache,
     apache_notify        => $apache_notify,
     write_apache_conf_to => $write_apache_conf_to,
-    wildrepos            => $wildrepos,
+    enable_features      => $enable_features,
+    git_config_keys      => $git_config_keys,
+    safe_config          => $safe_config,
     grouplist_pgm        => $grouplist_pgm,
-    repo_specific_hooks  => $repo_specific_hooks,
     local_code           => $local_code,
   }
   -> anchor { 'gitolite::server::end': }
