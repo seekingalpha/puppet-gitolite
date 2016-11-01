@@ -103,7 +103,7 @@ class gitolite(
   $gitweb_projectslist_ensure      = $gitolite::params::gitweb_projectslist_ensure,
   $gitweb_projectslist_content     = $gitolite::params::gitweb_projectslist_content,
   $gitweb_projectslist_target_path = $gitolite::params::gitweb_projectslist_target_path,
-) {
+) inherits gitolite::params {
   include stdlib
   include gitolite::params
 
