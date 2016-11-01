@@ -32,6 +32,11 @@
 #  $git_config_keys: Regular expression to configure GIT_CONFIG_KEYS.
 #  $local_code: path to a directory to add or override gitolite programs
 #               (see http://gitolite.com/gitolite/cust.html#localcode)
+#  $gitweb_projectslist_ensure: one of file or link
+#                              'file' will require additional content arg
+#                              'link' will require additional target path arg
+#  $gitweb_projectslist_content: string content
+#  $gitweb_projectslist_target_path: full target file path
 #
 # Actions:
 #  Configures gitolite/gitweb
@@ -54,6 +59,9 @@ class gitolite::server::config (
   $enable_features,
   $git_config_keys,
   $local_code,
+  $gitweb_projectslist_ensure      = $gitolite::gitweb_projectslist_ensure,
+  $gitweb_projectslist_content     = $gitolite::gitweb_projectslist_content,
+  $gitweb_projectslist_target_path = $gitolite::gitweb_projectslist_target_path,
 ) {
   File {
     owner => $gitolite::params::gt_uid,
@@ -210,11 +218,19 @@ class gitolite::server::config (
     environment => "HOME=${gitolite::params::gt_repo_base}",
     require     => File['gitolite-key'],
   }
+
+  $final_projectlist_content = case $gitweb_projectslist_ensure {
+    'file': { $gitweb_projectslist_content }
+    'link': { undef }
+  }
   file { "${gitolite::params::gt_repo_base}/projects.list":
-    ensure  => file,
-    mode    => '0640',
+    ensure  => $gitweb_projectslist_ensure,
+    content => $final_projectlist_content,
+    target  => $gitweb_projectslist_target_path,
+    mode    => '0644',
     require => Exec['install-gitolite'],
   }
+
   # Template uses $enable_features
   file { 'gitolite-config':
     path    => "${gitolite::params::gt_repo_base}/.gitolite.rc",

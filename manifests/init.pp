@@ -85,21 +85,24 @@
 #  Only install Git Client Binaries:
 #   class { 'gitolite': }
 class gitolite(
-  $server               = false,
-  $site_name            = '',
-  $vhost                = '',
-  $uri                  = "http://$vhost",
-  $manage_apache        = false,
-  $server_admin         = undef,
-  $apache_notify        = '',
-  $write_apache_conf_to = '',
-  $ssh_key              = '',
-  $hooks                = [],
-  $enable_features      = [],
-  $git_config_keys      = undef,
-  $safe_config          = undef,
-  $grouplist_pgm        = undef,
-  $local_code           = undef
+  $server                          = false,
+  $site_name                       = '',
+  $vhost                           = '',
+  $uri                             = "http://$vhost",
+  $manage_apache                   = false,
+  $server_admin                    = undef,
+  $apache_notify                   = '',
+  $write_apache_conf_to            = '',
+  $ssh_key                         = '',
+  $hooks                           = [],
+  $enable_features                 = [],
+  $git_config_keys                 = undef,
+  $safe_config                     = undef,
+  $grouplist_pgm                   = undef,
+  $local_code                      = undef,
+  $gitweb_projectslist_ensure      = $gitolite::params::gitweb_projectslist_ensure,
+  $gitweb_projectslist_content     = $gitolite::params::gitweb_projectslist_content,
+  $gitweb_projectslist_target_path = $gitolite::params::gitweb_projectslist_target_path,
 ) {
   include stdlib
   include gitolite::params
