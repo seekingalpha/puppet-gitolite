@@ -4,7 +4,6 @@
 #  This class is designed to configure the system to use Gitolite and Gitweb
 #
 # Parameters:
-#  $server: Whether to install gitolite in addition to git core tools.
 #  $site_name: (default: "fqdn Git Repository") The friendly name displayed on
 #              the GitWeb main page.
 #  $manage_apache: flag to determine whether gitolite module also manages Apache
@@ -41,17 +40,17 @@
 #
 # Sample Usage:
 #  This module should not be called directly.
-class gitolite::server::config(
+class gitolite::server::config (
   $site_name,
-  $ssh_key,
-  $vhost,
   $manage_apache,
-  $apache_notify,
   $write_apache_conf_to,
-  $enable_features,
-  $git_config_keys,
+  $apache_notify,
+  $vhost,
+  $ssh_key,
   $safe_config,
   $grouplist_pgm,
+  $enable_features,
+  $git_config_keys,
   $local_code,
 ) {
   File {
@@ -78,9 +77,6 @@ class gitolite::server::config(
   file { $gitolite::params::gt_repo_base:
     ensure => 'directory',
   }
-  #file { $gitolite::params::gt_repo_dir:
-  #  ensure  => 'directory',
-  #}
   file { "${gitolite::params::gt_httpd_conf_dir}/git.conf":
     ensure => 'absent',
   }
@@ -118,6 +114,17 @@ class gitolite::server::config(
   # puppetlabs-apache module to manage apache config
   # -JDF (12/1/2011)
   if $manage_apache == true {
+    $permission_dirs = [
+      "${gitolite::params::gt_repo_base}/.gitolite",
+      "${gitolite::params::gt_repo_base}/.gitolite/conf",
+      "${gitolite::params::gt_repo_base}/.gitolite/local/lib",
+    ]
+
+    file { $permission_dirs :
+      mode    => '0711',
+      require => File[$gitolite::params::gt_rep_base],
+    }
+
     # This flag allows other non- puppetlabs-apache modules to still be managed
     # by this module
     # Based on code provided by justone. Ref:
@@ -147,13 +154,49 @@ class gitolite::server::config(
     else {
       # By default, use the puppetlabs-apache module to manage Apache
       apache::vhost { $vhost:
-        port     => '80',
-        docroot  => $gitolite::params::gt_repo_dir,
-        ssl      => false,
-        template => 'gitolite/gitweb-apache-vhost.conf.erb',
-        priority => '99',
-        require  => [ File['/etc/gitweb.conf'],
-                      File["${gitolite::params::gt_httpd_conf_dir}/git.conf"] ],
+        serveradmin    => 'devops+git@seekingalpha.com',
+        port           => '80',
+        docroot        => $gitolite::params::gt_gitweb_root,
+        manage_docroot => false,
+        setenv         => [
+          'GITWEB_CONFIG   /etc/gitweb.conf',
+        ],
+        directories => [
+          {
+            path           => $gitolite::params::gt_gitweb_root,
+            directoryindex => $gitolite::params::gt_gitweb_binary,
+            options        => ['FollowSymLinks','ExecCGI'],
+            allow_override => 'All',
+            addhandlers    => [
+              { handler => 'cgi-script', extensions => ['.cgi']}
+            ],
+            rewrites       => [
+              {
+                rewrite_cond   => [
+                  '%{REQUEST_FILENAME} !-f',
+                  '%{REQUEST_FILENAME} !-d',
+                ],
+                rewrite_rule   => [
+                  "^.* /${gitolite::params::gt_gitweb_binary}/\$0 [L,PT]",
+                ],
+              },
+            ],
+          },
+          {
+            path           => $gitolite::params::gt_repo_dir,
+            allow_override => 'All',
+          },
+        ],
+        log_level         => debug,
+        error_log_file    => "${vhost}_error.log",
+        access_log_file   => "${gitolite::params::gt_httpd_var_dir}/${vhost}_access.log",
+        access_log_format => combined,
+        ssl               => false,
+        priority          => '99',
+        require           => [
+          File['/etc/gitweb.conf'],
+          File["${gitolite::params::gt_httpd_conf_dir}/git.conf"]
+        ],
       }
     }
   }
