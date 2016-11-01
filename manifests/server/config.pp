@@ -74,21 +74,20 @@ class gitolite::server::config (
 
   # gitolite User Setup
   user { $gitolite::params::gt_uid:
-    ensure  => 'present',
+    ensure  => present,
     home    => $gitolite::params::gt_repo_base,
     gid     => $gitolite::params::gt_gid,
     comment => 'git repository hosting',
   }
   group { $gitolite::params::gt_gid:
-    ensure  => 'present',
-    members => $gitolite::params::gt_httpd_uid,
+    ensure  => present,
   }
   # Git Filesystem Repository Setup
   file { $gitolite::params::gt_repo_base:
-    ensure => 'directory',
+    ensure => directory,
   }
   file { "${gitolite::params::gt_httpd_conf_dir}/git.conf":
-    ensure => 'absent',
+    ensure => absent,
   }
 
   # Gitweb Setup
@@ -138,15 +137,16 @@ class gitolite::server::config (
     # - vhost
     if $write_apache_conf_to != '' {
       if $apache_notify == '' {
-        fail('Cannot properly manage Apache if a refresh reference is not ' +
-              'specified')
+        fail('Cannot properly manage Apache if a refresh reference is not specified')
       } else {
         file { $write_apache_conf_to:
           ensure  => file,
           content => template('gitolite/gitweb-apache-vhost.conf.erb'),
           notify  => $apache_notify,
-          require => [ File['/etc/gitweb.conf'],
-                        File["${gitolite::params::gt_httpd_conf_dir}/git.conf"] ],
+          require => [
+            File['/etc/gitweb.conf'],
+            File["${gitolite::params::gt_httpd_conf_dir}/git.conf"]
+          ],
         }
       }
     }
@@ -167,7 +167,7 @@ class gitolite::server::config (
             options        => ['FollowSymLinks','ExecCGI'],
             allow_override => 'All',
             addhandlers    => [
-              { handler => 'cgi-script', extensions => ['.cgi']}
+              { handler    => 'cgi-script', extensions => ['.cgi']}
             ],
             rewrites       => [
               {
