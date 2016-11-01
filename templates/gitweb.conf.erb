@@ -3,7 +3,7 @@
 BEGIN {
   $ENV{HOME} = "<%= scope.lookupvar('gitolite::params::gt_repo_base') %>";
   $ENV{GL_BINDIR} = "<%= scope.lookupvar('gitolite::params::gt_bindir') %>";
-  $ENV{GL_LIBDIR} = "<%= scope.lookupvar('gitolite::params::gt_bindir') %>/lib";
+  $ENV{GL_LIBDIR} = "<%= scope.lookupvar('gitolite::params::gt_bindir') %>lib";
 }
 
 use lib $ENV{GL_LIBDIR};

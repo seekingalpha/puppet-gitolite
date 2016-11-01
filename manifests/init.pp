@@ -12,6 +12,7 @@
 #               the GitWeb main page.
 #  $manage_apache: flag to determine whether gitolite module also manages Apache
 #                  configuration
+#  $server_admin: The admin for Apache::Vhost resource (when configuring gitweb)
 #  $write_apache_conf_to: (file path). This option is used when you want to
 #                         contain apache configuration within the gitolite class,
 #                         but do not want to use the puppetlabs-apache module
@@ -89,6 +90,7 @@ class gitolite(
   $vhost                = '',
   $uri                  = "http://$vhost",
   $manage_apache        = false,
+  $server_admin         = undef,
   $apache_notify        = '',
   $write_apache_conf_to = '',
   $ssh_key              = '',
@@ -113,6 +115,7 @@ class gitolite(
       vhost                => $vhost,
       uri                  => $uri,
       manage_apache        => $manage_apache,
+      server_admin         => $server_admin,
       apache_notify        => $apache_notify,
       write_apache_conf_to => $write_apache_conf_to,
       ssh_key              => $ssh_key,
