@@ -104,19 +104,15 @@ class gitolite::server::config (
   file { "${gitolite::params::gt_gitweb_root}${gitolite::params::gt_gitweb_spath}":
     ensure => directory,
   }
-  file {
-    "${gitolite::params::gt_gitweb_root}${gitolite::params::gt_gitweb_spath}gitweb.css":
-    ensure  => file,
-    source  => 'puppet:///modules/gitolite/gitweb.css',
-    require =>
-      File["${gitolite::params::gt_gitweb_root}${gitolite::params::gt_gitweb_spath}"],
-  }
-  file {
-    "${gitolite::params::gt_gitweb_root}${gitolite::params::gt_gitweb_spath}gitweb.js":
-    ensure  => file,
-    source  => 'puppet:///modules/gitolite/gitweb.js',
-    require =>
-      File["${gitolite::params::gt_gitweb_root}${gitolite::params::gt_gitweb_spath}"],
+  $gitweb_static_files = ['gitweb.css', 'gitweb.js', 'git-favicon.png', 'git-logo.png' ]
+  each($gitweb_static_files) |$f| {
+    file {
+      "${gitolite::params::gt_gitweb_root}${gitolite::params::gt_gitweb_spath}${f}":
+        ensure  => file,
+        source  => "puppet:///modules/gitolite/${f}",
+        require =>
+        File["${gitolite::params::gt_gitweb_root}${gitolite::params::gt_gitweb_spath}"],
+    }
   }
 
   # Flag modifier to allow user to choose whether to use
