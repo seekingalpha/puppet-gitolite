@@ -111,6 +111,7 @@ class gitolite::server(
     safe_config          => $safe_config,
     grouplist_pgm        => $grouplist_pgm,
     local_code           => $local_code,
+    mirroring_hostname   => $mirroring_hostname,
   }
   -> anchor { 'gitolite::server::end': }
 }

@@ -59,6 +59,7 @@ class gitolite::server::config (
   $enable_features,
   $git_config_keys,
   $local_code,
+  $mirroring_hostname,
   $gitweb_projectslist_ensure      = $gitolite::gitweb_projectslist_ensure,
   $gitweb_projectslist_content     = $gitolite::gitweb_projectslist_content,
   $gitweb_projectslist_target_path = $gitolite::gitweb_projectslist_target_path,

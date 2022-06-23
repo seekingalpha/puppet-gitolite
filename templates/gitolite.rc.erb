@@ -6,6 +6,7 @@
         READERS                     =>  1,
         WRITERS                     =>  1,
     },
+    HOSTNAME => "<%= @mirroring_hostname %>",
 <% if @safe_config %>
     SAFE_CONFIG => {
     <% @safe_config.each do |varname, strvalue| %>

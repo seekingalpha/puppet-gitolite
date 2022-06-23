@@ -100,6 +100,7 @@ class gitolite(
   $safe_config                     = undef,
   $grouplist_pgm                   = undef,
   $local_code                      = undef,
+  $mirroring_hostname              = $::hostname,
   $gitweb_projectslist_ensure      = $gitolite::params::gitweb_projectslist_ensure,
   $gitweb_projectslist_content     = $gitolite::params::gitweb_projectslist_content,
   $gitweb_projectslist_target_path = $gitolite::params::gitweb_projectslist_target_path,
@@ -127,6 +128,7 @@ class gitolite(
       safe_config          => $safe_config,
       grouplist_pgm        => $grouplist_pgm,
       local_code           => $local_code,
+      mirroring_hostname   => $mirroring_hostname,
       require              => Class['gitolite::client'],
       before               => Anchor['gitolite::end'],
     }
