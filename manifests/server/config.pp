@@ -32,6 +32,8 @@
 #  $git_config_keys: Regular expression to configure GIT_CONFIG_KEYS.
 #  $local_code: path to a directory to add or override gitolite programs
 #               (see http://gitolite.com/gitolite/cust.html#localcode)
+#  $rc_file_append_code: append arbitrary Perl code to gitolite.rc
+#                        (see https://gitolite.com/gitolite/rc.html#appendix-c-overriding-safety-net-patterns)
 #
 # Actions:
 #  Configures gitolite/gitweb
@@ -53,6 +55,7 @@ class gitolite::server::config(
   $safe_config,
   $grouplist_pgm,
   $local_code,
+  $rc_file_append_code,
 ) {
   File {
     owner => $gitolite::params::gt_uid,

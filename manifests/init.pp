@@ -36,6 +36,8 @@
 #                  (see http://gitolite.com/gitolite/auth.html#ldap)
 #  $local_code: path to a directory to add or override gitolite programs
 #               (see http://gitolite.com/gitolite/cust.html#localcode)
+#  $rc_file_append_code: append arbitrary Perl code to gitolite.rc
+#                        (see https://gitolite.com/gitolite/rc.html#appendix-c-overriding-safety-net-patterns)
 #
 #
 # Actions:
@@ -97,7 +99,8 @@ class gitolite(
   $git_config_keys      = undef,
   $safe_config          = undef,
   $grouplist_pgm        = undef,
-  $local_code           = undef
+  $local_code           = undef,
+  $rc_file_append_code  = '',
 ) {
   include stdlib
   include gitolite::params
@@ -121,6 +124,7 @@ class gitolite(
       safe_config          => $safe_config,
       grouplist_pgm        => $grouplist_pgm,
       local_code           => $local_code,
+      rc_file_append_code  => $rc_file_append_code,
       require              => Class['gitolite::client'],
       before               => Anchor['gitolite::end'],
     }
